@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dona Gasolina – Restaurante Italiano em Itapetininga</title>
+  <meta name="description" content="A verdadeira experiência italiana em Itapetininga. Pratos artesanais, ambiente acolhedor e sabores autênticos.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (ícones) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Estilos próprios -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ================================================
+    LIGHTBOX – Modal de imagem ampliada
+  ================================================ -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagem ampliada">
+    <button id="lightbox-close" aria-label="Fechar">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="lightbox-img" src="" alt="Foto ampliada do restaurante">
+  </div>
+
+  <!-- ================================================
+    NAVBAR – Barra de navegação fixa
+  ================================================ -->
+  <nav id="navbar" role="navigation" aria-label="Menu principal">
+    <div class="container">
+      <div class="nav-inner">
+
+        <!-- Logotipo -->
+        <a href="#hero" class="nav-logo">Dona <span>Gasolina</span></a>
+
+        <!-- Links desktop -->
+        <ul class="nav-links">
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="#avaliacoes">Avaliações</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#informacoes">Contato</a></li>
+          <li>
+            <a href="#reservas" class="nav-cta">
+              <i class="fa-solid fa-calendar-check"></i> Reservar
+            </a>
+          </li>
+        </ul>
+
+        <!-- Botão hamburguer (mobile) -->
+        <button class="nav-hamburger" id="hamburgerBtn"
+                aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Menu mobile (aberto pelo hamburguer) -->
+      <div class="nav-mobile" id="mobileMenu" role="menu">
+        <a href="#sobre"       onclick="closeMobileMenu()">Sobre</a>
+        <a href="#cardapio"    onclick="closeMobileMenu()">Cardápio</a>
+        <a href="#avaliacoes"  onclick="closeMobileMenu()">Avaliações</a>
+        <a href="#galeria"     onclick="closeMobileMenu()">Galeria</a>
+        <a href="#informacoes" onclick="closeMobileMenu()">Contato</a>
+        <a href="#reservas"    onclick="closeMobileMenu()" class="mobile-cta">
+          <i class="fa-solid fa-calendar-check"></i> Fazer Reserva
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================================================
+    HERO – Seção de capa
+  ================================================ -->
+  <section id="hero" aria-label="Capa principal">
+
+    <!-- Fundo com parallax (imagem injetada via JS) -->
+    <div class="hero-bg" id="heroBg"></div>
+
+    <!-- Camadas de overlay e textura -->
+    <div class="hero-overlay"></div>
+    <div class="hero-noise"></div>
+
+    <!-- Linhas decorativas laterais -->
+    <div class="hero-line left" aria-hidden="true"></div>
+    <div class="hero-line right" aria-hidden="true"></div>
+
+    <!-- Conteúdo central -->
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <i class="fa-solid fa-pepper-hot"></i>
+        Restaurante Italiano · Itapetininga
+      </div>
+
+      <h1 class="hero-title">
+        Dona
+        <em>Gasolina</em>
+      </h1>
+
+      <p class="hero-subtitle">
+        A verdadeira experiência italiana em Itapetininga.<br>
+        Sabores artesanais, ambiente acolhedor e memórias para sempre.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#cardapio" class="btn-primary">
+          <i class="fa-solid fa-utensils"></i> Ver Cardápio
+        </a>
+        <a href="#reservas" class="btn-secondary">
+          <i class="fa-regular fa-calendar-check"></i> Fazer Reserva
+        </a>
+      </div>
+    </div>
+
+    <!-- Indicador de scroll animado -->
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-mouse"></div>
+      <span>Rolar</span>
+    </div>
+  </section>
+
+  <!-- ================================================
+    HIGHLIGHTS BAR – Ticker de informações
+  ================================================ -->
+  <section id="highlights-bar" aria-hidden="true">
+    <div class="highlights-track">
+      <!-- Itens duplicados para criar loop contínuo -->
+      <div class="highlight-item"><i class="fa-solid fa-star"></i><span>4,5 no Google</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-pizza-slice"></i><span>Culinária Italiana Artesanal</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-wine-glass"></i><span>Boa Seleção de Vinhos</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-heart"></i><span>Ambiente Romântico</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-truck-fast"></i><span>Delivery Disponível</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-calendar-check"></i><span>Aceita Reservas</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-beer-mug-empty"></i><span>Chopp Gelado</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-child-reaching"></i><span>Indicado para Famílias</span></div>
+      <!-- Repetição para loop infinito -->
+      <div class="highlight-item"><i class="fa-solid fa-star"></i><span>4,5 no Google</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-pizza-slice"></i><span>Culinária Italiana Artesanal</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-wine-glass"></i><span>Boa Seleção de Vinhos</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-heart"></i><span>Ambiente Romântico</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-truck-fast"></i><span>Delivery Disponível</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-calendar-check"></i><span>Aceita Reservas</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-beer-mug-empty"></i><span>Chopp Gelado</span></div>
+      <div class="highlight-item"><i class="fa-solid fa-child-reaching"></i><span>Indicado para Famílias</span></div>
+    </div>
+  </section>
+
+  <!-- ================================================
+    SOBRE – Apresentação do restaurante
+  ================================================ -->
+  <section id="sobre" aria-label="Sobre o restaurante">
+    <div class="container">
+      <div class="sobre-grid">
+
+        <!-- Coluna de texto -->
+        <div class="reveal">
+          <div class="sobre-badge">
+            <i class="fa-solid fa-leaf"></i>
+            <span>Nossa história</span>
+          </div>
+
+          <p class="section-label">Conheça a Dona Gasolina</p>
+          <h2 class="section-title">
+            Uma pitada de<br>
+            <em>tradição italiana</em>
+          </h2>
+          <div class="divider"></div>
+
+          <p class="sobre-text">
+            Localizado no coração de Itapetininga, o <strong>Dona Gasolina</strong> nasceu da paixão
+            pela culinária italiana autêntica. Cada prato é preparado com ingredientes selecionados
+            e receitas que honram as tradições da Itália, adaptadas com o carinho e o calor do interior paulista.
+          </p>
+
+          <p class="sobre-text">
+            Com mais de <strong class="highlight-gold">652 avaliações</strong> no Google e nota
+            <strong class="highlight-gold">4,5 estrelas</strong>, nossa cozinha fala por si.
+            Seja para um almoço rápido, um jantar especial ou uma reunião em família,
+            o Dona Gasolina é o lugar certo para momentos inesquecíveis.
+          </p>
+
+          <!-- Estatísticas em destaque -->
+          <div class="sobre-stats">
+            <div class="stat reveal reveal-delay-1">
+              <div class="stat-number">652</div>
+              <div class="stat-label">Avaliações</div>
+            </div>
+            <div class="stat reveal reveal-delay-2">
+              <div class="stat-number">4,5<small>★</small></div>
+              <div class="stat-label">No Google</div>
+            </div>
+            <div class="stat reveal reveal-delay-3">
+              <div class="stat-number">20+</div>
+              <div class="stat-label">Pratos no Menu</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna visual (fotos) -->
+        <div class="sobre-visual reveal reveal-delay-2">
+          <img class="sobre-img-main"   id="sobreImgMain"   src="" alt="Ambiente do restaurante Dona Gasolina">
+          <img class="sobre-img-accent" id="sobreImgAccent" src="" alt="Prato do restaurante">
+          <div class="sobre-tag">
+            <strong>4,5</strong>
+            <small>Google ★★★★½</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+    CARDÁPIO – Grid de pratos com filtros
+  ================================================ -->
+  <section id="cardapio" aria-label="Cardápio do restaurante">
+    <div class="container">
+
+      <!-- Cabeçalho da seção -->
+      <div class="section-header reveal">
+        <p class="section-label">O que preparamos para você</p>
+        <h2 class="section-title">Nosso Cardápio</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <!-- Botões de filtro por categoria -->
+      <div class="menu-filters reveal reveal-delay-1">
+        <button class="filter-btn active" data-filter="all">
+          <i class="fa-solid fa-border-all"></i> Todos
+        </button>
+        <button class="filter-btn" data-filter="massas">
+          <i class="fa-solid fa-bowl-rice"></i> Massas
+        </button>
+        <button class="filter-btn" data-filter="carnes">
+          <i class="fa-solid fa-drumstick-bite"></i> Carnes
+        </button>
+        <button class="filter-btn" data-filter="bebidas">
+          <i class="fa-solid fa-champagne-glasses"></i> Bebidas
+        </button>
+        <button class="filter-btn" data-filter="sobremesas">
+          <i class="fa-solid fa-cake-candles"></i> Sobremesas
+        </button>
+      </div>
+
+      <!-- Grid de cards – preenchido pelo JavaScript -->
+      <div class="menu-grid" id="menuGrid"></div>
+
+      <!-- Link para cardápio completo -->
+      <div class="menu-show-more">
+        <a href="https://cardapiodigital.io" target="_blank" rel="noopener" class="btn-secondary">
+          <i class="fa-solid fa-book-open"></i> Cardápio Completo
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================
+    AVALIAÇÕES – Depoimentos de clientes
+  ================================================ -->
+  <section id="avaliacoes" aria-label="Avaliações dos clientes">
+    <div class="container">
+
+      <!-- Cabeçalho + nota geral -->
+      <div class="avaliacao-header reveal">
+        <p class="section-label">O que nossos clientes dizem</p>
+        <h2 class="section-title">Avaliações</h2>
+        <div class="divider divider-center"></div>
+
+        <div class="rating-wrapper">
+          <div class="rating-badge">
+            <div class="rating-number">4,5</div>
+            <div class="rating-stars">★★★★½</div>
+            <div class="rating-count">652 avaliações no Google</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards de depoimentos -->
+      <div class="reviews-grid">
+
+        <article class="review-card reveal reveal-delay-1">
+          <div class="review-header">
+            <div class="review-avatar">E</div>
+            <div>
+              <div class="review-name">Elisabete Saraiva Larsen</div>
+              <div class="review-date">há 6 meses · Guia local</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            Comemos a Parmegiana de Filé Mignon com arroz e fritas. A comida estava ótima.
+            O tempo de espera foi um pouco longo, mas valeu cada minuto!
+          </p>
+        </article>
+
+        <article class="review-card reveal reveal-delay-2">
+          <div class="review-header">
+            <div class="review-avatar">C</div>
+            <div>
+              <div class="review-name">Cliente Satisfeita</div>
+              <div class="review-date">há 3 meses</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            Lugar acolhedor, funcionários muito atenciosos e comida deliciosa!
+            O ambiente é perfeito para um jantar a dois ou com a família.
+          </p>
+        </article>
+
+        <article class="review-card reveal reveal-delay-3">
+          <div class="review-header">
+            <div class="review-avatar">M</div>
+            <div>
+              <div class="review-name">Marcos Henrique</div>
+              <div class="review-date">há 2 meses</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            Pedi um macarrão com molho vermelho, calabresa, cebola, pimentão e cheiro verde.
+            Simplesmente incrível! Porção generosa e preço justo. Voltarei com certeza.
+          </p>
+        </article>
+
+        <article class="review-card reveal reveal-delay-1">
+          <div class="review-header">
+            <div class="review-avatar">A</div>
+            <div>
+              <div class="review-name">Ana Paula F.</div>
+              <div class="review-date">há 4 meses</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            Ótimo estabelecimento, com ótimos pratos e um preço excelente!!
+            O Polpetone é de cair o queixo. Recomendo demais para toda a família.
+          </p>
+        </article>
+
+        <article class="review-card reveal reveal-delay-2">
+          <div class="review-header">
+            <div class="review-avatar">J</div>
+            <div>
+              <div class="review-name">James Regis</div>
+              <div class="review-date">há 6 anos · Guia local</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            Top! Uma das melhores experiências gastronômicas de Itapetininga.
+            A Lasanha à Bolonhesa é simplesmente perfeita, receita tradicional italiana.
+          </p>
+        </article>
+
+        <article class="review-card reveal reveal-delay-3">
+          <div class="review-header">
+            <div class="review-avatar">L</div>
+            <div>
+              <div class="review-name">Lucia Moraes</div>
+              <div class="review-date">há 1 mês</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            <span class="review-icon">"</span>
+            O Rondelli ao Sugo e o Conchiglione de Mussarela são imperdíveis.
+            Restaurante muito caprichado, limpo, aconchegante. Nota 10!
+          </p>
+        </article>
+
+      </div>
+
+      <!-- Link externo para Google -->
+      <div class="section-footer-link reveal">
+        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-secondary">
+          <i class="fa-brands fa-google"></i> Ver todas as avaliações
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================
+    GALERIA – Grid de fotos com lightbox
+  ================================================ -->
+  <section id="galeria" aria-label="Galeria de fotos">
+    <div class="container">
+
+      <div class="galeria-header reveal">
+        <p class="section-label">Nossa galeria</p>
+        <h2 class="section-title">
+          Cada Prato,<br>
+          <em>uma obra de arte</em>
+        </h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <!-- Grid preenchido via JavaScript -->
+      <div class="gallery-grid reveal" id="galleryGrid"></div>
+
+    </div>
+  </section>
+
+  <!-- ================================================
+    INFORMAÇÕES – Contato, endereço, horários
+  ================================================ -->
+  <section id="informacoes" aria-label="Informações de contato">
+    <div class="container">
+
+      <div class="section-header reveal" style="text-align: center; margin-bottom: 60px;">
+        <p class="section-label">Venha nos visitar</p>
+        <h2 class="section-title">Informações &amp; Contato</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <div class="info-grid">
+
+        <!-- Card com dados de contato -->
+        <div class="info-card reveal">
+
+          <div class="info-item">
+            <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <div class="info-label">Endereço</div>
+              <div class="info-value">
+                Rua Fortunato Mazzei, 101<br>
+                Vila Maria – Itapetininga – SP<br>
+                CEP: 18200-520
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <div class="info-label">Telefone / WhatsApp</div>
+              <div class="info-value">
+                <a href="tel:+551532710661">(15) 3271-0661</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+            <div>
+              <div class="info-label">Horário de funcionamento</div>
+              <div class="info-value">
+                <div class="horario-grid">
+                  <div class="horario-row">
+                    <span class="horario-dia">Seg – Sex</span>
+                    <span class="horario-hora">11h00 – 23h00</span>
+                  </div>
+                  <div class="horario-row">
+                    <span class="horario-dia">Sábado</span>
+                    <span class="horario-hora">11h00 – 23h00</span>
+                  </div>
+                  <div class="horario-row">
+                    <span class="horario-dia">Domingo</span>
+                    <span class="horario-hora">11h00 – 22h00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <div class="info-label">Serviços</div>
+              <div class="servicos-grid">
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Comer no local</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Delivery</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Take away</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Aceita reservas</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Estacionamento</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Acessível</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Menu infantil</span>
+                <span class="servico-badge"><i class="fa-solid fa-check"></i>Bebidas alcoólicas</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Coluna direita: mapa + pagamentos -->
+        <div class="reveal reveal-delay-2">
+
+          <!-- Botão de mapa -->
+          <a class="mapa-placeholder"
+             href="https://maps.google.com/?q=Rua+Fortunato+Mazzei+101+Vila+Maria+Itapetininga+SP"
+             target="_blank" rel="noopener"
+             aria-label="Abrir endereço no Google Maps">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <div class="mapa-text">
+              <p class="mapa-address">Rua Fortunato Mazzei, 101</p>
+              <p>Vila Maria · Itapetininga – SP</p>
+              <p class="mapa-cta">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir no Google Maps
+              </p>
+            </div>
+          </a>
+
+          <!-- Card de pagamentos -->
+          <div class="info-card pagamentos-card">
+            <div class="pagamentos-label">
+              <i class="fa-solid fa-credit-card"></i> Formas de Pagamento
+            </div>
+            <div class="servicos-grid">
+              <span class="servico-badge"><i class="fa-solid fa-credit-card"></i>Crédito</span>
+              <span class="servico-badge"><i class="fa-solid fa-credit-card"></i>Débito</span>
+              <span class="servico-badge"><i class="fa-brands fa-pix"></i>Pix</span>
+              <span class="servico-badge"><i class="fa-solid fa-mobile-screen"></i>NFC</span>
+              <span class="servico-badge"><i class="fa-solid fa-ticket"></i>Alelo</span>
+              <span class="servico-badge"><i class="fa-solid fa-utensils"></i>Vale Refeição</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+    RESERVAS – CTA principal
+  ================================================ -->
+  <section id="reservas" aria-label="Faça sua reserva">
+    <div class="container">
+      <div class="reservas-inner reveal">
+        <p class="section-label">Reserve uma mesa</p>
+        <h2 class="section-title">
+          Venha viver a<br>
+          <em>experiência italiana</em>
+        </h2>
+        <div class="divider divider-center"></div>
+
+        <p class="reservas-desc">
+          Entre em contato pelo WhatsApp ou telefone e garanta sua mesa.<br>
+          Aceitamos grupos, famílias e ocasiões especiais.
+        </p>
+
+        <div class="reservas-buttons">
+          <a href="https://wa.me/551532710661?text=Olá!%20Gostaria%20de%20fazer%20uma%20reserva%20no%20Dona%20Gasolina."
+             target="_blank" rel="noopener"
+             class="btn-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i> Reservar pelo WhatsApp
+          </a>
+          <a href="tel:+551532710661" class="btn-primary">
+            <i class="fa-solid fa-phone"></i> (15) 3271-0661
+          </a>
+          <a href="https://cardapiodigital.io" target="_blank" rel="noopener" class="btn-secondary">
+            <i class="fa-solid fa-book-open"></i> Cardápio Completo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+    FOOTER
+  ================================================ -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Marca e redes sociais -->
+        <div class="footer-brand">
+          <h2>Dona <span>Gasolina</span></h2>
+          <p>
+            Restaurante italiano em Itapetininga – SP.
+            Sabores autênticos, ambiente acolhedor e momentos inesquecíveis.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://wa.me/551532710661" target="_blank" rel="noopener"
+               class="social-link" aria-label="WhatsApp">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://maps.google.com/?q=Dona+Gasolina+Itapetininga"
+               target="_blank" rel="noopener"
+               class="social-link" aria-label="Google Maps">
+              <i class="fa-brands fa-google"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Links de navegação -->
+        <div class="footer-col">
+          <h4>Menu</h4>
+          <ul class="footer-links">
+            <li><a href="#sobre"><i class="fa-solid fa-chevron-right"></i>Sobre nós</a></li>
+            <li><a href="#cardapio"><i class="fa-solid fa-chevron-right"></i>Cardápio</a></li>
+            <li><a href="#avaliacoes"><i class="fa-solid fa-chevron-right"></i>Avaliações</a></li>
+            <li><a href="#galeria"><i class="fa-solid fa-chevron-right"></i>Galeria</a></li>
+            <li><a href="#reservas"><i class="fa-solid fa-chevron-right"></i>Reservas</a></li>
+          </ul>
+        </div>
+
+        <!-- Contato resumido -->
+        <div class="footer-col">
+          <h4>Contato</h4>
+          <ul class="footer-links">
+            <li>
+              <a href="https://maps.google.com/?q=Rua+Fortunato+Mazzei+101+Itapetininga">
+                <i class="fa-solid fa-location-dot"></i>
+                Rua Fortunato Mazzei, 101 – Vila Maria
+              </a>
+            </li>
+            <li>
+              <a href="tel:+551532710661">
+                <i class="fa-solid fa-phone"></i>
+                (15) 3271-0661
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa-solid fa-clock"></i>
+                Seg–Sáb: 11h – 23h
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Rodapé inferior -->
+      <div class="footer-bottom">
+        <p>© 2025 Dona Gasolina. Todos os direitos reservados. Feito com <span class="heart">♥</span> em Itapetininga.</p>
+        <p>Desenvolvido por joaomenkdev-cloud <i class="fa-solid fa-code"></i></p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================================================
+    SCRIPTS
+    Ordem importa: images.js deve vir antes de main.js
+  ================================================ -->
+  <script src="assets/js/images.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
