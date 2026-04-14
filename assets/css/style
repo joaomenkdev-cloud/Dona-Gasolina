@@ -1,0 +1,1585 @@
+/* ============================================================
+   DONA GASOLINA – Restaurante Italiano
+   style.css  |  Estilos principais
+   ============================================================
+
+   ÍNDICE:
+   01. Variáveis CSS (Design Tokens)
+   02. Reset & Base
+   03. Scrollbar customizada
+   04. Utilitários (container, labels, divider, glass)
+   05. Animações de entrada (reveal)
+   06. Botões reutilizáveis
+   07. Navbar
+   08. Hero
+   09. Highlights Bar (ticker)
+   10. Sobre
+   11. Cardápio
+   12. Avaliações
+   13. Galeria + Lightbox
+   14. Informações / Contato
+   15. Reservas (CTA)
+   16. Footer
+   17. Keyframes
+   18. Responsivo – Tablet (max 900px)
+   19. Responsivo – Mobile (max 640px)
+   ============================================================ */
+
+
+/* ============================================================
+   01. VARIÁVEIS CSS – Design Tokens
+   ============================================================ */
+:root {
+  /* Paleta principal */
+  --verde:         #1a3a2a;
+  --verde-medio:   #224d38;
+  --verde-claro:   #2d6648;
+  --vermelho:      #c0392b;
+  --vermelho-vivo: #e74c3c;
+  --ouro:          #c9a96e;
+  --ouro-claro:    #e8c98a;
+
+  /* Texto */
+  --branco:        #f9f5ef;
+  --creme:         #f2ead8;
+  --texto:         #e8e0d0;
+  --texto-muted:   #b0a890;
+
+  /* Glassmorphism */
+  --glass-bg:      rgba(26, 58, 42, 0.45);
+  --glass-border:  rgba(201, 169, 110, 0.25);
+  --glass-blur:    blur(18px);
+
+  /* Bordas arredondadas */
+  --radius-sm:  8px;
+  --radius-md:  16px;
+  --radius-lg:  28px;
+  --radius-xl:  40px;
+
+  /* Sombras */
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 16px 48px rgba(0, 0, 0, 0.45);
+
+  /* Transição padrão */
+  --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+
+/* ============================================================
+   02. RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--verde);
+  color: var(--texto);
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+
+/* ============================================================
+   03. SCROLLBAR CUSTOMIZADA
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--verde); }
+::-webkit-scrollbar-thumb {
+  background: var(--ouro);
+  border-radius: 3px;
+}
+
+
+/* ============================================================
+   04. UTILITÁRIOS
+   ============================================================ */
+
+/* Largura máxima centralizada */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Label pequena acima dos títulos de seção */
+.section-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Título de seção (Cormorant Garamond) */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--branco);
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--ouro);
+}
+
+/* Cabeçalho de seção centralizado */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* Linha decorativa abaixo do título */
+.divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ouro), transparent);
+  margin: 20px 0 28px;
+}
+
+.divider-center {
+  margin: 20px auto 28px;
+}
+
+/* Link genérico ao final de seção */
+.section-footer-link {
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Base do glassmorphism reutilizável */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+}
+
+/* Texto dourado em destaque */
+.highlight-gold {
+  color: var(--ouro);
+}
+
+
+/* ============================================================
+   05. ANIMAÇÕES DE ENTRADA (reveal ao scroll)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delays escalonados para grupos de elementos */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+
+/* ============================================================
+   06. BOTÕES REUTILIZÁVEIS
+   ============================================================ */
+
+/* Botão primário (vermelho sólido) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--vermelho);
+  color: white;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: var(--transition);
+  box-shadow: 0 8px 30px rgba(192, 57, 43, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--vermelho-vivo);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(192, 57, 43, 0.55);
+}
+
+/* Botão secundário (glass outline) */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--branco);
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-3px);
+  border-color: var(--ouro);
+  color: var(--ouro);
+}
+
+/* Botão WhatsApp (verde) */
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: white;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: var(--transition);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover {
+  background: #1eb857;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.45);
+}
+
+
+/* ============================================================
+   07. NAVBAR
+   ============================================================ */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 18px 0;
+  transition: var(--transition);
+}
+
+/* Estado após scroll */
+#navbar.scrolled {
+  background: rgba(20, 45, 32, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--branco);
+  letter-spacing: 0.02em;
+}
+
+.nav-logo span { color: var(--ouro); }
+
+/* Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--texto-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+
+/* Sublinhado animado no hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ouro);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover            { color: var(--ouro); }
+.nav-links a:hover::after     { width: 100%; }
+
+/* CTA da navbar */
+.nav-cta {
+  background: var(--vermelho) !important;
+  color: white !important;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-weight: 600 !important;
+}
+
+.nav-cta:hover {
+  background: var(--vermelho-vivo) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
+}
+
+.nav-cta::after { display: none !important; }
+
+/* Botão hamburguer (mobile) */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--ouro);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* Menu mobile dropdown */
+.nav-mobile {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(20, 45, 32, 0.97);
+  backdrop-filter: blur(20px);
+  padding: 20px 24px;
+  gap: 16px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.nav-mobile.open { display: flex; }
+
+.nav-mobile a {
+  color: var(--texto);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  letter-spacing: 0.05em;
+}
+
+.nav-mobile .mobile-cta { color: var(--ouro); }
+
+
+/* ============================================================
+   08. HERO
+   ============================================================ */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Fundo com parallax (imagem via JS) */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  transform: scale(1.05);
+}
+
+/* Overlay escuro em gradiente */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 35, 22, 0.88) 0%,
+    rgba(26, 58, 42, 0.70) 50%,
+    rgba(15, 25, 18, 0.90) 100%
+  );
+}
+
+/* Textura de ruído sutil */
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* Linhas decorativas verticais */
+.hero-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--ouro-claro), transparent);
+  opacity: 0.15;
+}
+
+.hero-line.left  { left: 60px; }
+.hero-line.right { right: 60px; }
+
+/* Conteúdo central */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 900px;
+}
+
+/* Label animada acima do título */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 1px;
+  background: var(--ouro);
+  opacity: 0.6;
+}
+
+/* Título principal */
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--branco);
+  letter-spacing: -0.01em;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.5s forwards;
+}
+
+.hero-title em {
+  display: block;
+  font-style: italic;
+  color: var(--ouro);
+  font-weight: 300;
+}
+
+/* Subtítulo */
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+  color: rgba(232, 224, 208, 0.85);
+  margin: 20px 0 40px;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.7s forwards;
+}
+
+/* Grupo de botões */
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.9s forwards;
+}
+
+/* Indicador de scroll */
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s 1.5s forwards;
+  z-index: 2;
+}
+
+.hero-scroll span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--texto-muted);
+}
+
+.scroll-mouse {
+  width: 24px;
+  height: 38px;
+  border: 1px solid rgba(201, 169, 110, 0.4);
+  border-radius: 12px;
+  position: relative;
+}
+
+.scroll-mouse::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  background: var(--ouro);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: scrollBob 1.5s infinite;
+}
+
+
+/* ============================================================
+   09. HIGHLIGHTS BAR (ticker infinito)
+   ============================================================ */
+#highlights-bar {
+  background: var(--verde-medio);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 20px 0;
+  overflow: hidden;
+}
+
+.highlights-track {
+  display: flex;
+  gap: 60px;
+  animation: tickerMove 30s linear infinite;
+  white-space: nowrap;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.highlight-item i {
+  font-size: 1.1rem;
+  color: var(--ouro);
+}
+
+.highlight-item span {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-muted);
+}
+
+
+/* ============================================================
+   10. SOBRE
+   ============================================================ */
+#sobre {
+  padding: 120px 0;
+  position: relative;
+}
+
+/* Gradiente de fundo sutil */
+#sobre::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(44, 102, 72, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Layout de duas colunas */
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* Badge de destaque */
+.sobre-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  border-radius: 50px;
+  padding: 8px 18px;
+  margin-bottom: 24px;
+}
+
+.sobre-badge i     { color: var(--ouro); font-size: 0.85rem; }
+.sobre-badge span  {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  font-weight: 600;
+}
+
+/* Parágrafos de texto */
+.sobre-text {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: rgba(232, 224, 208, 0.8);
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+/* Linha de estatísticas */
+.sobre-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.stat { text-align: center; }
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--ouro);
+  line-height: 1;
+}
+
+.stat-number small { font-size: 1.5rem; }
+
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-muted);
+  margin-top: 6px;
+}
+
+/* Collage de imagens */
+.sobre-visual {
+  position: relative;
+  height: 500px;
+}
+
+.sobre-img-main {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 78%;
+  height: 75%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.sobre-img-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  height: 50%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 3px solid var(--verde);
+}
+
+/* Tag de nota sobre a imagem */
+.sobre-tag {
+  position: absolute;
+  bottom: 60px;
+  right: -10px;
+  background: var(--vermelho);
+  color: white;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.sobre-tag strong {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sobre-tag small {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+
+/* ============================================================
+   11. CARDÁPIO
+   ============================================================ */
+#cardapio {
+  padding: 100px 0 120px;
+  background: linear-gradient(180deg, var(--verde) 0%, rgba(18, 40, 28, 0.98) 100%);
+}
+
+/* Filtros de categoria */
+.menu-filters {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 0 50px;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--texto-muted);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: var(--transition);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+  color: white;
+  box-shadow: 0 4px 16px rgba(192, 57, 43, 0.35);
+}
+
+/* Grid de cards */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+/* Card individual */
+.menu-card {
+  background: rgba(26, 58, 42, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.menu-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(201, 169, 110, 0.5);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Container da imagem (overflow para o zoom) */
+.menu-card-img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.menu-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.menu-card:hover .menu-card-img { transform: scale(1.06); }
+
+/* Badge "Popular" */
+.badge-popular {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--vermelho);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Corpo do card */
+.menu-card-body { padding: 20px 22px 22px; }
+
+.menu-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--branco);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.menu-card-desc {
+  font-size: 0.82rem;
+  color: var(--texto-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+
+.menu-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ouro);
+}
+
+.menu-card-price small {
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+/* Botão "+" no card */
+.menu-card-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--vermelho);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.menu-card-btn:hover {
+  background: var(--vermelho-vivo);
+  transform: scale(1.1) rotate(45deg);
+  box-shadow: 0 4px 16px rgba(192, 57, 43, 0.5);
+}
+
+/* Link "Cardápio Completo" */
+.menu-show-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+
+/* ============================================================
+   12. AVALIAÇÕES
+   ============================================================ */
+#avaliacoes {
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Aspas decorativas gigantes no fundo */
+#avaliacoes::before {
+  content: '"';
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20rem;
+  line-height: 1;
+  color: rgba(201, 169, 110, 0.04);
+  pointer-events: none;
+  user-select: none;
+}
+
+.avaliacao-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* Badge com a nota geral */
+.rating-wrapper { margin-top: 32px; }
+
+.rating-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 24px 40px;
+}
+
+.rating-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--ouro);
+  line-height: 1;
+}
+
+.rating-stars {
+  color: var(--ouro);
+  font-size: 1.1rem;
+  margin: 8px 0 4px;
+  letter-spacing: 3px;
+}
+
+.rating-count {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-muted);
+}
+
+/* Grid de depoimentos */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* Card de review */
+.review-card {
+  background: rgba(26, 58, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: var(--transition);
+}
+
+.review-card:hover {
+  border-color: rgba(201, 169, 110, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.review-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--verde-claro), var(--ouro));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--verde);
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--branco);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--texto-muted);
+  margin-top: 2px;
+}
+
+.review-stars {
+  color: var(--ouro);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.review-text {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgba(232, 224, 208, 0.8);
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* Aspa de abertura do depoimento */
+.review-icon {
+  float: left;
+  font-size: 1.5rem;
+  color: var(--ouro);
+  opacity: 0.4;
+  margin-right: 10px;
+  margin-top: -4px;
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1;
+}
+
+
+/* ============================================================
+   13. GALERIA + LIGHTBOX
+   ============================================================ */
+#galeria {
+  padding: 100px 0;
+  background: rgba(16, 38, 26, 0.98);
+}
+
+.galeria-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* Grid assimétrico */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 200px);
+  gap: 10px;
+}
+
+/* Item da galeria */
+.gallery-item {
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img { transform: scale(1.08); }
+
+/* Overlay com ícone ao hover */
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 58, 42, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-item-overlay i {
+  font-size: 1.6rem;
+  color: white;
+}
+
+/* Tamanhos especiais no grid */
+.gallery-item.tall  { grid-row: span 2; }
+.gallery-item.wide  { grid-column: span 2; }
+
+/* Lightbox (modal de imagem ampliada) */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 25, 16, 0.95);
+  backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#lightbox.open { display: flex; }
+
+#lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+#lightbox-close:hover { opacity: 1; }
+
+
+/* ============================================================
+   14. INFORMAÇÕES / CONTATO
+   ============================================================ */
+#informacoes { padding: 100px 0; }
+
+/* Layout duas colunas */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Card de informações */
+.info-card {
+  background: rgba(26, 58, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 36px;
+}
+
+/* Linha de dado */
+.info-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: flex-start;
+}
+
+.info-item:last-child { border-bottom: none; }
+
+/* Ícone da linha */
+.info-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-icon i { color: var(--ouro); font-size: 1rem; }
+
+.info-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--texto-muted);
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: var(--branco);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.info-value a { transition: color 0.2s; }
+.info-value a:hover { color: var(--ouro); }
+
+/* Grade de horários */
+.horario-grid { display: grid; gap: 8px; }
+
+.horario-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+}
+
+.horario-dia  { color: var(--texto-muted); }
+.horario-hora { color: var(--branco); font-weight: 500; }
+
+/* Badges de serviços */
+.servicos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.servico-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--texto-muted);
+}
+
+.servico-badge i { color: var(--ouro); width: 16px; text-align: center; }
+
+/* Botão/link do mapa */
+.mapa-placeholder {
+  background: rgba(26, 58, 42, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: var(--transition);
+  text-decoration: none;
+  color: inherit;
+}
+
+.mapa-placeholder:hover {
+  border-color: var(--ouro);
+  background: rgba(26, 58, 42, 0.6);
+}
+
+.mapa-placeholder i { font-size: 2.5rem; color: var(--ouro); }
+
+.mapa-text { text-align: center; }
+
+.mapa-address {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--branco);
+  margin-bottom: 8px;
+}
+
+.mapa-text p { color: var(--texto-muted); font-size: 0.85rem; }
+
+.mapa-cta {
+  margin-top: 12px !important;
+  color: var(--ouro) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Card de pagamentos */
+.pagamentos-card { padding: 24px 28px; margin-top: 20px; }
+
+.pagamentos-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 14px;
+}
+
+
+/* ============================================================
+   15. RESERVAS (CTA)
+   ============================================================ */
+#reservas {
+  padding: 100px 0;
+  background: linear-gradient(135deg, rgba(26, 58, 42, 0.95), rgba(18, 40, 28, 1));
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow vermelho central */
+#reservas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(192, 57, 43, 0.08), transparent 70%);
+}
+
+.reservas-inner {
+  text-align: center;
+  position: relative;
+}
+
+.reservas-desc {
+  font-size: 1.05rem;
+  color: var(--texto-muted);
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+.reservas-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   16. FOOTER
+   ============================================================ */
+#footer {
+  background: rgba(12, 28, 20, 0.98);
+  border-top: 1px solid var(--glass-border);
+  padding: 60px 0 30px;
+}
+
+/* Grid principal */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 50px;
+}
+
+/* Bloco de marca */
+.footer-brand h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--branco);
+  margin-bottom: 12px;
+}
+
+.footer-brand h2 span { color: var(--ouro); }
+
+.footer-brand p {
+  font-size: 0.88rem;
+  color: var(--texto-muted);
+  line-height: 1.7;
+  max-width: 300px;
+  font-weight: 300;
+}
+
+/* Ícones de redes sociais */
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--texto-muted);
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.social-link:hover {
+  border-color: var(--ouro);
+  color: var(--ouro);
+  background: rgba(201, 169, 110, 0.1);
+  transform: translateY(-3px);
+}
+
+/* Colunas do footer */
+.footer-col h4 {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  color: var(--texto-muted);
+  font-size: 0.88rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links a i  { font-size: 0.7rem; color: var(--ouro); }
+.footer-links a:hover { color: var(--branco); }
+
+/* Barra de rodapé */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom p { font-size: 0.78rem; color: var(--texto-muted); }
+.footer-bottom .heart { color: var(--vermelho); }
+.footer-bottom i { color: var(--ouro); }
+
+
+/* ============================================================
+   17. KEYFRAMES
+   ============================================================ */
+
+/* Entrada com fade + subida */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade simples */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Bolinha deslizando no ícone de scroll */
+@keyframes scrollBob {
+  0%, 100% { top: 6px;  opacity: 1;   }
+  50%       { top: 18px; opacity: 0.2; }
+}
+
+/* Movimento do ticker */
+@keyframes tickerMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+
+/* ============================================================
+   18. RESPONSIVO – TABLET (max-width: 900px)
+   ============================================================ */
+@media (max-width: 900px) {
+
+  /* Sobre: uma coluna */
+  .sobre-grid { grid-template-columns: 1fr; }
+  .sobre-visual { height: 300px; order: -1; }
+  .sobre-img-main { width: 70%; }
+
+  /* Contato: uma coluna */
+  .info-grid { grid-template-columns: 1fr; }
+
+  /* Footer: duas colunas */
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: span 2; }
+
+  /* Galeria: 3 colunas */
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 170px);
+  }
+}
+
+
+/* ============================================================
+   19. RESPONSIVO – MOBILE (max-width: 640px)
+   ============================================================ */
+@media (max-width: 640px) {
+
+  /* Navbar: ocultar links, mostrar hamburguer */
+  .nav-links    { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Hero: remover linhas decorativas */
+  .hero-line { display: none; }
+
+  /* Sobre: esconder collage de fotos */
+  .sobre-visual { display: none; }
+  .sobre-stats  { gap: 24px; flex-wrap: wrap; }
+
+  /* Cardápio: uma coluna */
+  .menu-grid { grid-template-columns: 1fr; }
+
+  /* Avaliações: uma coluna */
+  .reviews-grid { grid-template-columns: 1fr; }
+
+  /* Galeria: 2 colunas flat */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 150px);
+  }
+  .gallery-item.tall { grid-row: span 1; }
+  .gallery-item.wide { grid-column: span 1; }
+
+  /* Footer: uma coluna */
+  .footer-grid  { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: span 1; }
+
+  /* Reservas: botões empilhados */
+  .reservas-buttons { flex-direction: column; align-items: center; }
+}
