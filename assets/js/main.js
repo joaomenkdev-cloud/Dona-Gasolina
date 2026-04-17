@@ -1,27 +1,11 @@
 /* ============================================================
-   DONA GASOLINA – Restaurante Italiano
-   main.js  |  Lógica principal do site
-   ============================================================
-
-   ÍNDICE:
-   01. Dados do cardápio (menuItems)
-   02. Dados da galeria (galleryItems)
-   03. Renderização do cardápio (renderMenu / buildMenuCard)
-   04. Renderização da galeria (buildGallery)
-   05. Lightbox (openLightbox / closeLightbox)
-   06. Hero background + parallax
-   07. Seção "Sobre" – imagens
-   08. Navbar – scroll e hamburguer
-   09. Filtros do cardápio
-   10. IntersectionObserver – animação reveal
-   11. Inicialização (DOMContentLoaded)
+   DONA GASOLINA – Lógica principal
+   main.js  |  Redesign moderno
    ============================================================ */
 
 
 /* ============================================================
    01. DADOS DO CARDÁPIO
-   Cada item tem: key (chave da imagem em IMGS), name, desc,
-   price, category e popular (boolean).
    ============================================================ */
 const menuItems = [
   {
@@ -173,8 +157,6 @@ const menuItems = [
 
 /* ============================================================
    02. DADOS DA GALERIA
-   Cada item tem: key (chave em IMGS) e classes CSS opcionais
-   (tall = 2 linhas, wide = 2 colunas, '' = normal).
    ============================================================ */
 const galleryItems = [
   { key: 'lasagne',                             classes: 'tall' },
@@ -195,16 +177,9 @@ const galleryItems = [
 /* ============================================================
    03. RENDERIZAÇÃO DO CARDÁPIO
    ============================================================ */
-
-/**
- * Constrói o HTML de um card individual do cardápio.
- * @param {Object} item - Objeto do array menuItems
- * @returns {string} - String HTML do card
- */
 function buildMenuCard(item) {
   const imgSrc = IMGS[item.key] || '';
 
-  // Badge "Popular" só aparece se item.popular === true
   const popularBadge = item.popular
     ? `<div class="badge-popular">
          <i class="fa-solid fa-fire"></i> Popular
@@ -225,7 +200,7 @@ function buildMenuCard(item) {
         <p class="menu-card-desc">${item.desc}</p>
         <div class="menu-card-footer">
           <span class="menu-card-price">
-            <small>A partir de </small>${item.price}
+            <small>A partir de</small>${item.price}
           </span>
           <button class="menu-card-btn" aria-label="Ver ${item.name}">
             <i class="fa-solid fa-plus"></i>
@@ -236,22 +211,13 @@ function buildMenuCard(item) {
   `;
 }
 
-/**
- * Renderiza o grid do cardápio, opcionalmente filtrando por categoria.
- * @param {string} filter - Categoria ('all' para mostrar todos)
- */
 function renderMenu(filter = 'all') {
   const grid = document.getElementById('menuGrid');
-
-  // Filtra os itens conforme a categoria selecionada
   const items = filter === 'all'
     ? menuItems
     : menuItems.filter(item => item.category === filter);
 
-  // Injeta os cards no DOM
   grid.innerHTML = items.map(buildMenuCard).join('');
-
-  // Re-observa os novos elementos para a animação de entrada
   grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 }
 
@@ -259,17 +225,11 @@ function renderMenu(filter = 'all') {
 /* ============================================================
    04. RENDERIZAÇÃO DA GALERIA
    ============================================================ */
-
-/**
- * Constrói o HTML do grid da galeria e insere no DOM.
- * Cada item é clicável e abre o lightbox.
- */
 function buildGallery() {
   const grid = document.getElementById('galleryGrid');
 
   grid.innerHTML = galleryItems.map(({ key, classes }) => {
     const src = IMGS[key] || '';
-
     return `
       <div class="gallery-item ${classes}"
            role="button"
@@ -277,9 +237,7 @@ function buildGallery() {
            aria-label="Ver imagem ampliada"
            onclick="openLightbox('${key}')"
            onkeydown="if(event.key === 'Enter') openLightbox('${key}')">
-        <img src="${src}"
-             alt="Foto do restaurante Dona Gasolina"
-             loading="lazy">
+        <img src="${src}" alt="Foto do restaurante Dona Gasolina" loading="lazy">
         <div class="gallery-item-overlay" aria-hidden="true">
           <i class="fa-solid fa-magnifying-glass-plus"></i>
         </div>
@@ -292,185 +250,127 @@ function buildGallery() {
 /* ============================================================
    05. LIGHTBOX
    ============================================================ */
-
-/**
- * Abre o lightbox exibindo a imagem correspondente à chave informada.
- * @param {string} key - Chave da imagem no objeto IMGS
- */
 function openLightbox(key) {
   const lightbox = document.getElementById('lightbox');
   const img      = document.getElementById('lightbox-img');
-
   img.src = IMGS[key] || '';
   lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden'; // Impede scroll do fundo
+  document.body.style.overflow = 'hidden';
 }
 
-/**
- * Fecha o lightbox e restaura o scroll da página.
- */
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-// Fecha ao clicar no botão "×"
-document.getElementById('lightbox-close')
-  .addEventListener('click', closeLightbox);
-
-// Fecha ao clicar fora da imagem (no overlay)
-document.getElementById('lightbox')
-  .addEventListener('click', function (e) {
-    if (e.target === this) closeLightbox();
-  });
-
-// Fecha com tecla Escape
-document.addEventListener('keydown', e => {
+document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeLightbox();
 });
 
 
 /* ============================================================
-   06. HERO – BACKGROUND E PARALLAX
+   06. HERO BACKGROUND + PARALLAX
    ============================================================ */
-
-/**
- * Define a imagem de fundo do hero a partir do IMGS embutido.
- * Usa lasagne como imagem principal de fundo.
- */
 function setupHeroBg() {
   const bg = document.getElementById('heroBg');
-  const heroKey = IMGS['dona_gasolina'] ? 'dona_gasolina' : 'lasagne';
-  if (IMGS[heroKey]) {
-    bg.style.backgroundImage = `url(${IMGS[heroKey]})`;
+  if (bg && IMGS.lasagne) {
+    bg.style.backgroundImage = `url('${IMGS.lasagne}')`;
   }
 }
 
-/**
- * Efeito parallax suave: move o fundo conforme o scroll.
- * Escuta passivamente para não bloquear o scroll.
- */
 function initParallax() {
   const bg = document.getElementById('heroBg');
-
+  if (!bg) return;
   window.addEventListener('scroll', () => {
-    const offset = window.scrollY;
-    bg.style.transform = `scale(1.05) translateY(${offset * 0.25}px)`;
+    const scrollY = window.scrollY;
+    bg.style.transform = `scale(1.05) translateY(${scrollY * 0.25}px)`;
   }, { passive: true });
 }
 
 
 /* ============================================================
-   07. SEÇÃO "SOBRE" – IMAGENS
+   07. SEÇÃO SOBRE – IMAGENS
    ============================================================ */
-
-/**
- * Define as imagens do bloco visual da seção Sobre.
- */
 function setupSobreImgs() {
-  const imgMain   = document.getElementById('sobreImgMain');
-  const imgAccent = document.getElementById('sobreImgAccent');
-
-  if (IMGS['rondelli_ao_sugo']) imgMain.src   = IMGS['rondelli_ao_sugo'];
-  if (IMGS['petit_gateau'])     imgAccent.src = IMGS['petit_gateau'];
+  const main   = document.getElementById('sobreImgMain');
+  const accent = document.getElementById('sobreImgAccent');
+  if (main   && IMGS.dona_gasolina) main.src   = IMGS.dona_gasolina;
+  if (accent && IMGS.risotto)       accent.src = IMGS.risotto;
 }
 
 
 /* ============================================================
    08. NAVBAR – SCROLL E HAMBURGUER
    ============================================================ */
+function setupNavbar() {
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
 
-const navbar       = document.getElementById('navbar');
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-const mobileMenu   = document.getElementById('mobileMenu');
+  const hamburger  = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-/**
- * Adiciona/remove a classe .scrolled na navbar conforme o scroll.
- * Essa classe ativa o fundo com blur.
- */
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+}
 
-/**
- * Alterna a visibilidade do menu mobile ao clicar no hamburguer.
- */
-hamburgerBtn.addEventListener('click', () => {
-  const isOpen = mobileMenu.classList.toggle('open');
-  hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
-});
-
-/**
- * Fecha o menu mobile (chamado pelos links do menu mobile via onclick).
- * Exportado como função global para uso no HTML inline.
- */
 function closeMobileMenu() {
-  mobileMenu.classList.remove('open');
-  hamburgerBtn.setAttribute('aria-expanded', 'false');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
 }
 
 
 /* ============================================================
    09. FILTROS DO CARDÁPIO
    ============================================================ */
-
-/**
- * Adiciona listener de clique a cada botão de filtro.
- * Ao clicar, ativa o botão clicado e re-renderiza o cardápio.
- */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Remove 'active' de todos os botões
-    document.querySelectorAll('.filter-btn')
-      .forEach(b => b.classList.remove('active'));
-
-    // Ativa o botão clicado
-    btn.classList.add('active');
-
-    // Re-renderiza o grid com o filtro selecionado
-    renderMenu(btn.dataset.filter);
+function setupFilters() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu(btn.dataset.filter);
+    });
   });
-});
+}
 
 
 /* ============================================================
-   10. INTERSECTIONOBSERVER – ANIMAÇÃO REVEAL
+   10. INTERSECTION OBSERVER – ANIMAÇÃO REVEAL
    ============================================================ */
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
 
-/**
- * Observer que adiciona a classe .visible aos elementos .reveal
- * quando eles entram na viewport, disparando a animação CSS.
- * Usa threshold de 12% para ativar um pouco antes do elemento
- * estar totalmente visível.
- */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target); // Para de observar após animar
-    }
-  });
-}, { threshold: 0.12 });
-
-/**
- * Registra todos os elementos .reveal atuais no observer.
- * Chamada na inicialização e após renderizar novos cards.
- */
-function observeRevealElements() {
-  document.querySelectorAll('.reveal')
-    .forEach(el => revealObserver.observe(el));
+function initReveal() {
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 }
 
 
 /* ============================================================
    11. INICIALIZAÇÃO
-   Aguarda o DOM estar pronto antes de executar tudo.
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  setupHeroBg();       // Aplica imagem de fundo no hero
-  setupSobreImgs();    // Aplica imagens na seção Sobre
-  initParallax();      // Inicia o efeito parallax
-  renderMenu();        // Renderiza todos os pratos do cardápio
-  buildGallery();      // Monta o grid da galeria
-  observeRevealElements(); // Inicia as animações de entrada
+  setupHeroBg();
+  initParallax();
+  setupSobreImgs();
+  setupNavbar();
+  renderMenu('all');
+  buildGallery();
+  setupFilters();
+  initReveal();
 });
